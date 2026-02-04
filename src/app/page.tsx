@@ -13,18 +13,20 @@ interface Planet {
   angle: number;
   speed: number;
   info: string;
+  gravity: string;
+  diameter: string;
 }
 
 const PLANETS_DATA: Record<PlanetKey, Planet> = {
-  sun: { name: '☀️ 太陽', color: '#ffaa00', radius: 25, distance: 0, angle: 0, speed: 0, info: '太陽系の中心。全ての命の源。' },
-  mercury: { name: '🟤 水星', color: '#a9a9a9', radius: 4, distance: 60, angle: 0, speed: 0.04, info: '太陽に最も近い惑星。大気はほとんどない。' },
-  venus: { name: '🟡 金星', color: '#e6e6fa', radius: 7, distance: 100, angle: 2, speed: 0.015, info: '最も高温な惑星。厚い雲に覆われている。' },
-  earth: { name: '🔵 地球', color: '#1e90ff', radius: 7, distance: 140, angle: 4, speed: 0.01, info: '生命が存在する唯一の惑星。私たちの故郷。' },
-  mars: { name: '🔴 火星', color: '#ff4500', radius: 5, distance: 180, angle: 1, speed: 0.008, info: '赤い惑星。かつて水が存在した痕跡がある。' },
-  jupiter: { name: '🟠 木星', color: '#daa520', radius: 18, distance: 260, angle: 3, speed: 0.003, info: '太陽系最大の巨大ガス惑星。' },
-  saturn: { name: '🟡 土星', color: '#f4a460', radius: 15, distance: 340, angle: 5, speed: 0.002, info: '美しい環を持つ惑星。ガスでできている。' },
-  uranus: { name: '🔷 天王星', color: '#00ced1', radius: 10, distance: 400, angle: 2, speed: 0.0015, info: '氷の巨大惑星。自転軸が横倒しになっている。' },
-  neptune: { name: '🔵 海王星', color: '#00008b', radius: 10, distance: 460, angle: 6, speed: 0.001, info: '最も遠い惑星。強い嵐が吹き荒れている。' }
+  sun: { name: '☀️ 太陽', color: '#ffaa00', radius: 25, distance: 0, angle: 0, speed: 0, info: '太陽系の中心。全ての命の源。', gravity: '274.0 m/s²', diameter: '1,392,700 km' },
+  mercury: { name: '🟤 水星', color: '#a9a9a9', radius: 4, distance: 60, angle: 0, speed: 0.04, info: '太陽に最も近い惑星。大気はほとんどない。', gravity: '3.7 m/s²', diameter: '4,879 km' },
+  venus: { name: '🟡 金星', color: '#e6e6fa', radius: 7, distance: 100, angle: 2, speed: 0.015, info: '最も高温な惑星。厚い雲に覆われている。', gravity: '8.87 m/s²', diameter: '12,104 km' },
+  earth: { name: '🔵 地球', color: '#1e90ff', radius: 7, distance: 140, angle: 4, speed: 0.01, info: '生命が存在する唯一の惑星。私たちの故郷。', gravity: '9.80 m/s²', diameter: '12,742 km' },
+  mars: { name: '🔴 火星', color: '#ff4500', radius: 5, distance: 180, angle: 1, speed: 0.008, info: '赤い惑星。かつて水が存在した痕跡がある。', gravity: '3.71 m/s²', diameter: '6,779 km' },
+  jupiter: { name: '🟠 木星', color: '#daa520', radius: 18, distance: 260, angle: 3, speed: 0.003, info: '太陽系最大の巨大ガス惑星。', gravity: '24.79 m/s²', diameter: '139,820 km' },
+  saturn: { name: '🟡 土星', color: '#f4a460', radius: 15, distance: 340, angle: 5, speed: 0.002, info: '美しい環を持つ惑星。ガスでできている。', gravity: '10.44 m/s²', diameter: '116,460 km' },
+  uranus: { name: '🔷 天王星', color: '#00ced1', radius: 10, distance: 400, angle: 2, speed: 0.0015, info: '氷の巨大惑星。自転軸が横倒しになっている。', gravity: '8.69 m/s²', diameter: '50,724 km' },
+  neptune: { name: '🔵 海王星', color: '#00008b', radius: 10, distance: 460, angle: 6, speed: 0.001, info: '最も遠い惑星。強い嵐が吹き荒れている。', gravity: '11.15 m/s²', diameter: '49,244 km' }
 };
 
 export default function Home() {
@@ -399,8 +401,10 @@ export default function Home() {
                   <div className="font-bold mb-1" style={{ color: selectedPlanetInfo.color }}>{selectedPlanetInfo.name}</div>
                   <div className="mb-2 leading-relaxed opacity-90">{selectedPlanetInfo.info}</div>
                   <div className="text-[10px] opacity-70 border-t border-white/10 pt-1">
-                    距離: {selectedPlanetInfo.distance * 100}万km<br />
-                    公転周期: {selectedPlanetInfo.speed > 0 ? (365 / (selectedPlanetInfo.speed / 0.01)).toFixed(0) : '---'}日
+                    <div>距離: {selectedPlanetInfo.distance * 100}万km</div>
+                    <div>公転周期: {selectedPlanetInfo.speed > 0 ? (365 / (selectedPlanetInfo.speed / 0.01)).toFixed(0) : '---'}日</div>
+                    <div>大きさ: {selectedPlanetInfo.diameter}</div>
+                    <div>重力: {selectedPlanetInfo.gravity}</div>
                   </div>
                 </>
               ) : '惑星を選択してください'}
