@@ -45,7 +45,7 @@ const getRealPlanetAngle = (planetName: string, date: Date): number => {
     case 'neptune': body = Astronomy.Body.Neptune; break;
     default: return Math.random() * Math.PI * 2; // Fallback or Sun
   }
-  const coords = Astronomy.HeliocentricCoordinates(body, date);
+  const coords = Astronomy.HelioVector(body, date);
   // Calculate angle in radians from x, y coordinates
   return Math.atan2(coords.y, coords.x);
 };
