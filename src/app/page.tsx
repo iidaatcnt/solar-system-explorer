@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
+import * as Astronomy from 'astronomy-engine';
 
 type PlanetKey = 'sun' | 'mercury' | 'venus' | 'earth' | 'mars' | 'jupiter' | 'saturn' | 'uranus' | 'neptune';
 
@@ -30,15 +31,48 @@ const PLANETS_DATA: Record<PlanetKey, Planet> = {
   neptune: { name: '🔵 海王星', color: '#00008b', radius: 10, distance: 460, angle: 6, speed: 0.001, info: '最も遠い惑星。強い嵐が吹き荒れている。', gravity: '11.15 m/s² (1.14 G)', diameter: '49,244 km', temperature: '平均 -200 °C' }
 };
 
+// Helper to get real planetary angle (heliocentric longitude)
+const getRealPlanetAngle = (planetName: string, date: Date): number => {
+  let body: Astronomy.Body;
+  switch (planetName) {
+    case 'mercury': body = Astronomy.Body.Mercury; break;
+    case 'venus': body = Astronomy.Body.Venus; break;
+    case 'earth': body = Astronomy.Body.Earth; break;
+    case 'mars': body = Astronomy.Body.Mars; break;
+    case 'jupiter': body = Astronomy.Body.Jupiter; break;
+    case 'saturn': body = Astronomy.Body.Saturn; break;
+    case 'uranus': body = Astronomy.Body.Uranus; break;
+    case 'neptune': body = Astronomy.Body.Neptune; break;
+    default: return Math.random() * Math.PI * 2; // Fallback or Sun
+  }
+  const coords = Astronomy.HeliocentricCoordinates(body, date);
+  // Calculate angle in radians from x, y coordinates
+  return Math.atan2(coords.y, coords.x);
+};
+
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Game State Refs (High frequency updates)
+  // Initialize state with real planetary positions
+  const initializePlanets = () => {
+    const planets = JSON.parse(JSON.stringify(PLANETS_DATA));
+    const now = new Date();
+    (Object.keys(planets) as PlanetKey[]).forEach(key => {
+      if (key !== 'sun') {
+        planets[key].angle = getRealPlanetAngle(key, now);
+      }
+    });
+    return planets;
+  };
+
   const spaceshipRef = useRef({ x: 160, y: 0, vx: 0, vy: 1.5, angle: 0 });
   const keysRef = useRef<Record<string, boolean>>({});
   const mouseRef = useRef({ x: 0, y: 0 });
-  const planetsRef = useRef(JSON.parse(JSON.stringify(PLANETS_DATA))); // Deep copy for mutable state
+
+  // Use initialized planets
+  const planetsRef = useRef(initializePlanets());
+
   const gameStateRef = useRef({
     isPaused: false,
     timeScale: 1,
@@ -49,6 +83,8 @@ export default function Home() {
     centerY: 0,
     selectedPlanet: 'earth' as PlanetKey | null,
   });
+
+  // ... (rest of the component)
 
   // UI State (Low frequency updates)
   const [selectedPlanetInfo, setSelectedPlanetInfo] = useState<Planet | null>(PLANETS_DATA.earth);
