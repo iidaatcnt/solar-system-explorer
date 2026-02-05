@@ -141,7 +141,7 @@ export default function Home() {
       if (gameStateRef.current.isPaused) return;
 
       const spaceship = spaceshipRef.current;
-      const thrust = gameStateRef.current.thrust / 100 * 0.1;
+      const thrust = gameStateRef.current.thrust / 100 * 0.3;
 
       // Mouse Aiming
       const worldMouseX = mouseRef.current.x / gameStateRef.current.zoom;
@@ -173,7 +173,7 @@ export default function Home() {
         const dist = Math.sqrt(distX * distX + distY * distY);
 
         if (dist > p.radius) {
-          const gravityStrength = (p.radius * 20) / (dist * dist);
+          const gravityStrength = (p.radius * 0.5) / (dist * dist);
           spaceship.vx += (distX / dist) * gravityStrength;
           spaceship.vy += (distY / dist) * gravityStrength;
         }
