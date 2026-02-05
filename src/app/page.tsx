@@ -149,14 +149,27 @@ export default function Home() {
       spaceship.angle = Math.atan2(worldMouseY - spaceship.y, worldMouseX - spaceship.x);
 
       // Controls
+      // W: Forward
       if (keysRef.current['w']) {
         spaceship.vx += Math.cos(spaceship.angle) * thrust;
         spaceship.vy += Math.sin(spaceship.angle) * thrust;
       }
+      // S: Backward
       if (keysRef.current['s']) {
         spaceship.vx -= Math.cos(spaceship.angle) * thrust * 0.5;
         spaceship.vy -= Math.sin(spaceship.angle) * thrust * 0.5;
       }
+      // A: Left Strafe (Force vector -90 degrees)
+      if (keysRef.current['a']) {
+        spaceship.vx += Math.cos(spaceship.angle - Math.PI / 2) * thrust * 0.5;
+        spaceship.vy += Math.sin(spaceship.angle - Math.PI / 2) * thrust * 0.5;
+      }
+      // D: Right Strafe (Force vector +90 degrees)
+      if (keysRef.current['d']) {
+        spaceship.vx += Math.cos(spaceship.angle + Math.PI / 2) * thrust * 0.5;
+        spaceship.vy += Math.sin(spaceship.angle + Math.PI / 2) * thrust * 0.5;
+      }
+
       if (keysRef.current[' ']) {
         spaceship.vx *= 0.95;
         spaceship.vy *= 0.95;
@@ -274,14 +287,47 @@ export default function Home() {
       ctx.translate(spaceship.x, spaceship.y);
       ctx.rotate(spaceship.angle);
 
-      // Jet
+      // Jet Effects
+      ctx.fillStyle = 'rgba(255, 100, 0, 0.8)';
+
+      // Main thruster (Forward W)
       if (keysRef.current['w']) {
-        ctx.fillStyle = 'rgba(255, 100, 0, 0.8)';
         ctx.beginPath();
         ctx.moveTo(-6, -3);
         ctx.lineTo(-15 - Math.random() * 10, 0);
         ctx.lineTo(-6, 3);
-        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Reverse thrusters (Backward S) - front facing
+      if (keysRef.current['s']) {
+        ctx.beginPath();
+        ctx.moveTo(8, -2);
+        ctx.lineTo(12 + Math.random() * 5, -3);
+        ctx.lineTo(8, -4);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(8, 2);
+        ctx.lineTo(12 + Math.random() * 5, 3);
+        ctx.lineTo(8, 4);
+        ctx.fill();
+      }
+
+      // Left strafe thrusters (A) - right side facing
+      if (keysRef.current['a']) {
+        ctx.beginPath();
+        ctx.moveTo(2, 4);
+        ctx.lineTo(4, 10 + Math.random() * 5);
+        ctx.lineTo(6, 4);
+        ctx.fill();
+      }
+
+      // Right strafe thrusters (D) - left side facing
+      if (keysRef.current['d']) {
+        ctx.beginPath();
+        ctx.moveTo(2, -4);
+        ctx.lineTo(4, -10 - Math.random() * 5);
+        ctx.lineTo(6, -4);
         ctx.fill();
       }
 
@@ -377,7 +423,7 @@ export default function Home() {
       <header className="flex-shrink-0 bg-[#0a0e27]/95 border-b-[3px] border-[#00d4ff] p-4 flex justify-between items-center z-10">
         <div>
           <h1 className="text-2xl text-[#00d4ff] font-bold">🚀 太陽系探索シミュレーター</h1>
-          <p className="text-xs text-[#00ff88]">マウスで宇宙船を操縦しよう！ [W]加速 [S]減速 [Space]ブレーキ</p>
+          <p className="text-xs text-[#00ff88]">マウスで宇宙船を操縦しよう！ [WASD]移動 [Space]ブレーキ</p>
         </div>
       </header>
 
