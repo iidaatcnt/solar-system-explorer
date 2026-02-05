@@ -186,7 +186,7 @@ export default function Home() {
         const dist = Math.sqrt(distX * distX + distY * distY);
 
         if (dist > p.radius) {
-          const gravityStrength = (p.radius * 0.5) / (dist * dist);
+          const gravityStrength = (p.radius * 3.0) / (dist * dist);
           spaceship.vx += (distX / dist) * gravityStrength;
           spaceship.vy += (distY / dist) * gravityStrength;
         }
