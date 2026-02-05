@@ -423,7 +423,7 @@ export default function Home() {
       <header className="flex-shrink-0 bg-[#0a0e27]/95 border-b-[3px] border-[#00d4ff] p-4 flex justify-between items-center z-10">
         <div>
           <h1 className="text-2xl text-[#00d4ff] font-bold">🚀 太陽系探索シミュレーター</h1>
-          <p className="text-xs text-[#00ff88]">マウスで宇宙船を操縦しよう！ [WASD]移動 [Space]ブレーキ</p>
+          <p className="text-xs text-[#00ff88]">マウスで宇宙船を操縦しよう！ [WASD]ロケット噴射 [Space]ブレーキ</p>
         </div>
       </header>
 
